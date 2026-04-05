@@ -137,12 +137,26 @@ function spinWheel() {
 
   const winnerIndex = Math.floor(Math.random() * entries.length);
   const slice = (Math.PI * 2) / entries.length;
+  const fullSpins = 5;
 
-  // Align the chosen slice center with the top pointer
-  const targetAngle = 5 * Math.PI * 2 - (winnerIndex * slice + slice / 2);
+  // Where the chosen slice should end up:
+  // slice center aligned with the top pointer
+  const desiredRotation = -((winnerIndex * slice) + slice / 2);
+
+  // Normalize current rotation to 0..2π
+  const currentNormalized =
+    ((rotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+
+  // Normalize desired rotation to 0..2π
+  const desiredNormalized =
+    ((desiredRotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+
+  // Smallest forward movement to reach desired position
+  let delta = desiredNormalized - currentNormalized;
+  if (delta < 0) delta += Math.PI * 2;
 
   const startRotation = rotation;
-  const finalRotation = startRotation + targetAngle;
+  const finalRotation = rotation + fullSpins * Math.PI * 2 + delta;
   const startTime = performance.now();
   const duration = 5200;
 
@@ -164,6 +178,15 @@ function spinWheel() {
       requestAnimationFrame(animate);
       return;
     }
+
+    if (tickAudio) tickAudio.stop();
+    isSpinning = false;
+    triggerButton.classList.remove('pulling');
+    showWinner(entries[winnerIndex]);
+  }
+
+  requestAnimationFrame(animate);
+}
 
     if (tickAudio) tickAudio.stop();
     isSpinning = false;
