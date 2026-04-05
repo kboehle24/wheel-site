@@ -1,16 +1,16 @@
 const IMAGE_ENTRIES = [
-  { name: 'Image 1', file: 'assets/image-1.jpeg' },
-  { name: 'Image 2', file: 'assets/image-2.png' },
-  { name: 'Image 3', file: 'assets/image-3.png' },
-  { name: 'Image 4', file: 'assets/image-4.png' },
-  { name: 'Image 5', file: 'assets/image-5.jpeg' },
-  { name: 'Image 6', file: 'assets/image-6.jpeg' },
-  { name: 'Image 7', file: 'assets/image-7.jpeg' },
-  { name: 'Image 8', file: 'assets/image-8.jpeg' },
-  { name: 'Image 9', file: 'assets/image-9.jpeg' },
-  { name: 'Image 10', file: 'assets/image-10.jpeg' },
-  { name: 'Image 11', file: 'assets/image-11.jpeg' },
-  { name: 'Image 12', file: 'assets/image-12.jpeg' }
+  { name: 'Astrid Held', file: 'assets/image-1.jpeg' },
+  { name: 'Chris Burton', file: 'assets/image-2.png' },
+  { name: 'Ruby Burton', file: 'assets/image-3.png' },
+  { name: 'Ivy Burton', file: 'assets/image-4.png' },
+  { name: 'Amelia Boehle', file: 'assets/image-5.jpeg' },
+  { name: 'Dee Burton', file: 'assets/image-6.jpeg' },
+  { name: 'Finn Sumner', file: 'assets/image-7.jpeg' },
+  { name: 'Ben Burton', file: 'assets/image-8.jpeg' },
+  { name: 'Carina Naumann', file: 'assets/image-9.jpeg' },
+  { name: 'Hannah Burton', file: 'assets/image-10.jpeg' },
+  { name: 'Oli Burton', file: 'assets/image-11.jpeg' },
+  { name: 'The confused man', file: 'assets/image-12.jpeg' }
 ];
 
 const canvas = document.getElementById('wheelCanvas');
