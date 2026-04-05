@@ -9,7 +9,7 @@ const IMAGE_ENTRIES = [
   { name: 'Ben Burton', file: 'assets/image-8.jpeg' },
   { name: 'Carina Naumann', file: 'assets/image-9.jpeg' },
   { name: 'Hannah Burton', file: 'assets/image-10.jpeg' },
-  { name: 'Oli Boehle', file: 'assets/image-11.jpeg' },
+  { name: 'Oliver Boehle', file: 'assets/image-11.jpeg' },
   { name: 'The confused man', file: 'assets/image-12.jpeg' }
 ];
 
