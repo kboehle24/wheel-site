@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wheel for Winner selection</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <p class="eyebrow">Lucky draw</p>
+      <h1>Wheel for Winner selection</h1>
+      <p class="subtext">Pull the trigger and let the wheel choose one winning image.</p>
+    </header>
+
+    <main class="app-card">
+      <section class="wheel-section">
+        <div class="pointer"></div>
+        <div class="wheel-wrap">
+          <canvas id="wheelCanvas" width="900" height="900" aria-label="Spinning image wheel"></canvas>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <div class="panel-block">
+          <p class="panel-label">Images loaded</p>
+          <strong id="imageCount">0</strong>
+        </div>
+
+        <div class="panel-block trigger-block">
+          <p class="panel-label">Trigger</p>
+          <button id="triggerButton" class="trigger-button" type="button" aria-label="Pull trigger to spin">
+            <span class="trigger-stick"></span>
+            <span class="trigger-knob"></span>
+          </button>
+          <p class="hint">Click the trigger to start the spin.</p>
+        </div>
+
+        <div class="panel-block result-block">
+          <p class="panel-label">Current result</p>
+          <div id="currentResult" class="current-result">Ready to spin</div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="winnerModal" class="winner-modal hidden" aria-hidden="true">
+    <div class="winner-card">
+      <div class="winner-badge">Winner</div>
+      <img id="winnerImage" src="" alt="Winning image" />
+      <h2 id="winnerName">Image 1</h2>
+      <button id="spinAgainButton" class="spin-again" type="button">Spin again</button>
+    </div>
+  </div>
+
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
