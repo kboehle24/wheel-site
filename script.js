@@ -114,6 +114,7 @@ function drawWheel(angle) {
   ctx.arc(0, 0, 46, 0, Math.PI * 2);
   ctx.fillStyle = '#18223a';
   ctx.fill();
+
   ctx.beginPath();
   ctx.arc(0, 0, 14, 0, Math.PI * 2);
   ctx.fillStyle = '#ffffff';
@@ -126,14 +127,9 @@ function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-function getWinnerIndex(finalRotation) {
-  const slice = (Math.PI * 2) / entries.length;
-  const normalized = ((-Math.PI / 2 - finalRotation) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-  return Math.floor(normalized / slice) % entries.length;
-}
-
 function spinWheel() {
   if (isSpinning || !entries.length) return;
+
   isSpinning = true;
   triggerButton.classList.add('pulling');
   currentResult.textContent = 'Spinning...';
@@ -141,7 +137,10 @@ function spinWheel() {
 
   const winnerIndex = Math.floor(Math.random() * entries.length);
   const slice = (Math.PI * 2) / entries.length;
-  const targetAngle = 5 * Math.PI * 2 + (Math.PI / 2) - (winnerIndex * slice + slice / 2);
+
+  // Align the chosen slice center with the top pointer
+  const targetAngle = 5 * Math.PI * 2 - (winnerIndex * slice + slice / 2);
+
   const startRotation = rotation;
   const finalRotation = startRotation + targetAngle;
   const startTime = performance.now();
@@ -152,6 +151,7 @@ function spinWheel() {
   function animate(now) {
     const elapsed = now - startTime;
     const t = Math.min(elapsed / duration, 1);
+
     rotation = startRotation + (finalRotation - startRotation) * easeOutCubic(t);
     drawWheel(rotation);
 
@@ -168,8 +168,9 @@ function spinWheel() {
     if (tickAudio) tickAudio.stop();
     isSpinning = false;
     triggerButton.classList.remove('pulling');
-    const actualWinnerIndex = getWinnerIndex(rotation);
-    showWinner(entries[actualWinnerIndex]);
+
+    // Use the originally selected winner so the popup always matches the wheel
+    showWinner(entries[winnerIndex]);
   }
 
   requestAnimationFrame(animate);
@@ -208,6 +209,7 @@ function startTicking() {
   gain.gain.value = 0.015;
   oscillator.connect(gain).connect(audioContext.destination);
   oscillator.start();
+
   return {
     set playbackRate(value) {
       oscillator.frequency.setValueAtTime(value * 6, audioContext.currentTime);
@@ -222,11 +224,14 @@ function startTicking() {
 function playTone(freq, start, duration, type = 'sine', volume = 0.08) {
   const osc = audioContext.createOscillator();
   const gain = audioContext.createGain();
+
   osc.type = type;
   osc.frequency.value = freq;
+
   gain.gain.setValueAtTime(0.0001, start);
   gain.gain.linearRampToValueAtTime(volume, start + 0.02);
   gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
   osc.connect(gain).connect(audioContext.destination);
   osc.start(start);
   osc.stop(start + duration + 0.05);
@@ -236,7 +241,11 @@ function playCelebration() {
   ensureAudioContext();
   const now = audioContext.currentTime;
   const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
-  notes.forEach((note, i) => playTone(note, now + i * 0.16, 0.24, 'triangle', 0.07));
+
+  notes.forEach((note, i) => {
+    playTone(note, now + i * 0.16, 0.24, 'triangle', 0.07);
+  });
+
   playTone(261.63, now, 1.2, 'sine', 0.03);
 }
 
@@ -258,6 +267,7 @@ function burstConfetti() {
 
   function animate() {
     confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
     confettiPieces.forEach(piece => {
       piece.vy += gravity;
       piece.x += piece.vx;
@@ -274,7 +284,9 @@ function burstConfetti() {
       confettiCtx.restore();
     });
 
-    confettiPieces = confettiPieces.filter(piece => piece.alpha > 0 && piece.y < window.innerHeight + 40);
+    confettiPieces = confettiPieces.filter(
+      piece => piece.alpha > 0 && piece.y < window.innerHeight + 40
+    );
 
     if (confettiPieces.length) {
       confettiFrame = requestAnimationFrame(animate);
@@ -287,10 +299,12 @@ function burstConfetti() {
 }
 
 triggerButton.addEventListener('click', spinWheel);
+
 spinAgainButton.addEventListener('click', () => {
   hideWinner();
   spinWheel();
 });
+
 winnerModal.addEventListener('click', (event) => {
   if (event.target === winnerModal) hideWinner();
 });
